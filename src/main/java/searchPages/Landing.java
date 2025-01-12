@@ -20,9 +20,9 @@ public class Landing {
     }
 
 
-    public Landing search(String searchQuery){
+    public Results search(String searchQuery){
         driver.findElement(searchBox).sendKeys(searchQuery + Keys.ENTER);
-        return this;
+        return new Results(driver);
     }
 
 

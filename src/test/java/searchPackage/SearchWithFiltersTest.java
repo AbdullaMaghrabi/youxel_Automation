@@ -11,25 +11,27 @@ import taskTemplate.TestClass;
 public class SearchWithFiltersTest extends TestClass {
 
     @Test
-    public void searchAndFilterTest(){
+    public void searchAndFilterTest() {
 
-        // Navigate and search
-        new Landing(driver).navigate().search("laptob");
+        // Navigate to site and search
+        Results resultsPage = new Landing(driver)
+                .navigate()
+                .search("laptop");
 
-        // Wait for results and validate title
+        // Validate search result title
         wait.until(d -> {
-            String resultTitle = new Results(driver).getSearchResultTitle(1);
-            Assert.assertTrue(resultTitle.toLowerCase().contains("laptop"), "Filtered results do not match criteria!");
-            return true;
-        });
+        String resultTitle = resultsPage.getSearchResultTitle(1);
+        Assert.assertTrue(
+                resultTitle.toLowerCase().contains("laptop"),
+                "Search result title does not contain expected keyword!");
 
-        // Apply price filter and validate price
-        wait.until(d -> {
-            String price = new Results(driver).priceFilter(10000, 20000)
-                    .getSearchResultPrice(1)
-                    .replaceAll("[^0-9]", "");
-            int priceInt = Integer.parseInt(price);
-            Assert.assertTrue(priceInt >= 10000 && priceInt <= 20000, "Filtered results do not match criteria!");
+        // Apply price filter and validate results
+        int price = resultsPage
+                .priceFilter(10000, 20000)
+                .getSearchResultPrice(1);
+        Assert.assertTrue(
+                price >= 10000 && price <= 20000,
+                "Filtered result price is outside the specified range!");
             return true;
         });
     }

@@ -3,6 +3,7 @@ package searchPages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+
 public class Results {
 
     private WebDriver driver;
@@ -23,9 +24,10 @@ public class Results {
         return driver.findElement(dynamicResult).getText();
     }
 
-    public String getSearchResultPrice(int targetSearchResult){
+    public int getSearchResultPrice(int targetSearchResult){
         dynamicResult = By.xpath("(//strong[@class='amount'])[" + targetSearchResult + "]");
-        return driver.findElement(dynamicResult).getText();
+        String priceText = driver.findElement(dynamicResult).getText().replaceAll("[^0-9]", "");
+        return Integer.parseInt(priceText);
     }
 
     public Results priceFilter (int minPrice, int maxPrice){
